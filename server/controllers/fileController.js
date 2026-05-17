@@ -221,7 +221,7 @@ const deleteFile = async (req, res, next) => {
 
     // Determine resource type for Cloudinary deletion
     let resourceType = 'raw';
-    if (file.fileType === 'image') resourceType = 'image';
+    if (file.fileType === 'image' || file.fileType === 'pdf') resourceType = 'image';
     if (file.fileType === 'video') resourceType = 'video';
 
     // Delete from Cloudinary

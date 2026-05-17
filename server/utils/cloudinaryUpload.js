@@ -7,6 +7,7 @@ const streamifier = require('streamifier');
 const getResourceType = (mimeType) => {
   if (mimeType.startsWith('image/')) return 'image';
   if (mimeType.startsWith('video/')) return 'video';
+  if (mimeType === 'application/pdf') return 'image';
   return 'raw';
 };
 
