@@ -68,7 +68,8 @@ export default function SharedFilePage() {
       return <video src={file.fileUrl} controls className="max-w-full max-h-[50vh] rounded-xl" />;
     }
     if (file.fileType === 'pdf') {
-      return <iframe src={file.fileUrl} className="w-full h-[50vh] rounded-xl border-0" title={file.fileName} />;
+      const secureUrl = file.fileUrl.replace('http://', 'https://');
+      return <iframe src={secureUrl} className="w-full h-[50vh] rounded-xl border-0" title={file.fileName} />;
     }
     const Icon = typeIcons[file.fileType] || FiFile;
     return (

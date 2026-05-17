@@ -30,8 +30,9 @@ export default function PreviewModal({ file, isOpen, onClose, onDownload }: Prev
       );
     }
     if (file.fileType === 'pdf') {
+      const secureUrl = file.fileUrl.replace('http://', 'https://');
       return (
-        <iframe src={file.fileUrl}
+        <iframe src={secureUrl}
           className="w-full h-[65vh] rounded-xl border-0" title={file.fileName} />
       );
     }
