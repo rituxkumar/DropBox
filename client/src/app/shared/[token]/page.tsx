@@ -35,16 +35,27 @@ export default function SharedFilePage() {
     if (token) fetchFile();
   }, [token]);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!file) return;
-    const link = document.createElement('a');
-    link.href = file.fileUrl;
-    link.download = file.fileName;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success('Download started');
+    const toastId = toast.loading('Downloading file...');
+    try {
+      const response = await fetch(file.fileUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = file.fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      window.URL.revokeObjectURL(blobUrl);
+      toast.success('Download completed!', { id: toastId });
+    } catch (err) {
+      console.error(err);
+      toast.error('Download failed', { id: toastId });
+    }
   };
 
   const renderPreview = () => {

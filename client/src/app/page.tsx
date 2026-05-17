@@ -50,17 +50,29 @@ export default function DashboardPage() {
   }, [setFileType]);
 
   const handleDownload = useCallback(async (file: FileData) => {
+    const toastId = toast.loading('Downloading file...');
     try {
       const res = await fileService.downloadFile(file._id);
+      
+      // Fetch the file as a blob to force same-origin browser download
+      const response = await fetch(res.data.url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      
       const link = document.createElement('a');
-      link.href = res.data.url;
-      link.download = res.data.fileName;
-      link.target = '_blank';
+      link.href = blobUrl;
+      link.download = file.fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      toast.success('Download started');
-    } catch { toast.error('Download failed'); }
+      
+      // Clean up the URL object
+      window.URL.revokeObjectURL(blobUrl);
+      toast.success('Download completed!', { id: toastId });
+    } catch (err) {
+      console.error(err);
+      toast.error('Download failed', { id: toastId });
+    }
   }, []);
 
   const handleDelete = useCallback(async (file: FileData) => {
