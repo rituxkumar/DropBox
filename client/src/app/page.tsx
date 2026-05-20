@@ -12,6 +12,7 @@ import FileGrid from '@/components/FileGrid';
 import UploadModal from '@/components/UploadModal';
 import PreviewModal from '@/components/PreviewModal';
 import ShareModal from '@/components/ShareModal';
+import AiChatPanel from '@/components/AiChatPanel';
 import StatsCard from '@/components/StatsCard';
 import { FiFolder, FiHardDrive, FiImage, FiVideo, FiFileText, FiArchive } from 'react-icons/fi';
 import { formatFileSize } from '@/utils/formatters';
@@ -31,6 +32,7 @@ export default function DashboardPage() {
   const [uploadOpen, setUploadOpen] = useState(false);
   const [previewFile, setPreviewFile] = useState<FileData | null>(null);
   const [shareFile, setShareFile] = useState<FileData | null>(null);
+  const [chatFile, setChatFile] = useState<FileData | null>(null);
   const [activeView, setActiveView] = useState('dashboard');
   const [renameFile, setRenameFile] = useState<FileData | null>(null);
   const [renameValue, setRenameValue] = useState('');
@@ -150,7 +152,7 @@ export default function DashboardPage() {
                   hasMore={false} onLoadMore={() => {}}
                   onPreview={setPreviewFile} onDownload={handleDownload}
                   onDelete={handleDelete} onRename={(f) => { setRenameFile(f); setRenameValue(f.fileName); }}
-                  onShare={setShareFile} onUpload={() => setUploadOpen(true)} />
+                  onShare={setShareFile} onChat={setChatFile} onUpload={() => setUploadOpen(true)} />
               </div>
             </motion.div>
           ) : (
@@ -170,7 +172,7 @@ export default function DashboardPage() {
                 hasMore={hasMore} onLoadMore={loadMore}
                 onPreview={setPreviewFile} onDownload={handleDownload}
                 onDelete={handleDelete} onRename={(f) => { setRenameFile(f); setRenameValue(f.fileName); }}
-                onShare={setShareFile} onUpload={() => setUploadOpen(true)} />
+                onShare={setShareFile} onChat={setChatFile} onUpload={() => setUploadOpen(true)} />
             </motion.div>
           )}
         </main>
@@ -182,6 +184,8 @@ export default function DashboardPage() {
         onClose={() => setPreviewFile(null)} onDownload={handleDownload} />
       <ShareModal file={shareFile} isOpen={!!shareFile}
         onClose={() => setShareFile(null)} onUpdate={refresh} />
+      <AiChatPanel file={chatFile} isOpen={!!chatFile}
+        onClose={() => setChatFile(null)} />
 
       {/* Rename dialog */}
       {renameFile && (

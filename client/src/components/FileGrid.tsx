@@ -17,12 +17,13 @@ interface FileGridProps {
   onDelete: (file: FileData) => void;
   onRename: (file: FileData) => void;
   onShare: (file: FileData) => void;
+  onChat: (file: FileData) => void;
   onUpload: () => void;
 }
 
 export default function FileGrid({
   files, loading, loadingMore, hasMore, onLoadMore,
-  onPreview, onDownload, onDelete, onRename, onShare, onUpload,
+  onPreview, onDownload, onDelete, onRename, onShare, onChat, onUpload,
 }: FileGridProps) {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -55,7 +56,7 @@ export default function FileGrid({
         {files.map((file, index) => (
           <FileCard key={file._id} file={file} index={index}
             onPreview={onPreview} onDownload={onDownload}
-            onDelete={onDelete} onRename={onRename} onShare={onShare} />
+            onDelete={onDelete} onRename={onRename} onShare={onShare} onChat={onChat} />
         ))}
       </div>
 

@@ -46,6 +46,17 @@ const fileSchema = new mongoose.Schema(
       unique: true,
       sparse: true,
     },
+    extractedText: {
+      type: String,
+      default: '',
+    },
+    aiChatHistory: [
+      {
+        role: { type: String, enum: ['user', 'model'], required: true },
+        text: { type: String, required: true },
+        timestamp: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,

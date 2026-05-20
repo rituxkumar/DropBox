@@ -15,10 +15,11 @@ const app = express();
 // CORS
 app.use(
   cors({
-    origin: 'https://drop-box-omega.vercel.app',
+    origin: ['https://drop-box-omega.vercel.app','http://localhost:3000'],
     credentials: true,
   })
 );
+
 
 // Body parser
 app.use(express.json({ limit: '50mb' }));
@@ -32,6 +33,7 @@ app.get('/api/health', (req, res) => {
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/files', require('./routes/fileRoutes'));
+app.use('/api/ai', require('./routes/aiRoutes'));
 
 // Error handler
 app.use(errorHandler);

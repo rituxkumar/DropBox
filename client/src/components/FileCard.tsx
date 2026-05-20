@@ -14,6 +14,7 @@ import {
   FiEdit3,
   FiShare2,
   FiEye,
+  FiMessageSquare,
 } from 'react-icons/fi';
 import { FileData } from '@/services/fileService';
 import { formatFileSize, formatDate, truncateFileName } from '@/utils/formatters';
@@ -26,6 +27,7 @@ interface FileCardProps {
   onDelete: (file: FileData) => void;
   onRename: (file: FileData) => void;
   onShare: (file: FileData) => void;
+  onChat: (file: FileData) => void;
 }
 
 const fileIcons: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
@@ -45,6 +47,7 @@ export default function FileCard({
   onDelete,
   onRename,
   onShare,
+  onChat,
 }: FileCardProps) {
   const [showMenu, setShowMenu] = useState(false);
   const { icon: FileIcon, color, bg } = fileIcons[file.fileType] || fileIcons.other;
@@ -161,6 +164,14 @@ export default function FileCard({
                 >
                   <FiShare2 className="w-4 h-4" /> Share
                 </button>
+                {(file.fileType === 'pdf' || file.fileType === 'document' || file.mimeType.includes('text/')) && (
+                  <button
+                    onClick={() => { onChat(file); setShowMenu(false); }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+                  >
+                    <FiMessageSquare className="w-4 h-4" /> Talk to AI
+                  </button>
+                )}
                 <hr className="my-1 border-border" />
                 <button
                   onClick={() => { onDelete(file); setShowMenu(false); }}
